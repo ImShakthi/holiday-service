@@ -1,0 +1,4 @@
+### say hello
+GET {{server}}/api/v1/hello
+Accept: application/json
+
