@@ -18,9 +18,15 @@ public class CountryService {
           countryCodes.add(country.countryCode().toUpperCase());
         });
 
-    log.info("Country codes: {}", countryCodes);
+    log.debug("Country codes: {}", countryCodes);
   }
 
+  /**
+   * Method to check whether given country code is valid
+   *
+   * @param countryCode country code
+   * @return country code is available or not
+   */
   public boolean isValidCountryCode(final String countryCode) {
     return countryCodes.contains(countryCode.toUpperCase());
   }
