@@ -1,5 +1,6 @@
 package com.imshakthi.ds.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "Holiday details.")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Holiday {
   @Schema(description = "Date of holiday.", example = "2025-01-01")
   private String date;

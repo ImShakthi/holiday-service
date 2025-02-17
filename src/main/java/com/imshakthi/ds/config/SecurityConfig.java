@@ -24,7 +24,7 @@ public class SecurityConfig {
                 auth.requestMatchers("/api/v1/hello")
                     .permitAll()
                     .requestMatchers(
-                        HttpMethod.GET, "/api/v1/holidays/last-celebrated-holidays/{country}")
+                        HttpMethod.GET, "/api/v1/holidays/last-celebrated/{country}")
                     .permitAll()
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
                     .permitAll()

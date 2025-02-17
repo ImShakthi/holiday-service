@@ -2,3 +2,11 @@
 GET {{server}}/api/v1/hello
 Accept: application/json
 
+
+### return 400 for country code not supported
+GET {{server}}/api/v1/holidays/last-celebrated/IN
+Accept: application/json
+
+### return last 3 celebrated public holiday for country code
+GET {{server}}/api/v1/holidays/last-celebrated/NL
+Accept: application/json
