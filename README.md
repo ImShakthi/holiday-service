@@ -8,16 +8,16 @@
 
 ## Commands
 
-- To run test
-
-```shell
-./mvnw clean test
-```
-
 - To run compile
 
 ```shell
 ./mvnw clean compile
+```
+
+- To run test
+
+```shell
+./mvnw clean test
 ```
 
 - To start server, application with run in `8081`
