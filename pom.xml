@@ -16,6 +16,7 @@
     <properties>
         <java.version>21</java.version>
         <junit.jupiter.version>5.11.4</junit.jupiter.version>
+        <mockito.version>5.14.2</mockito.version>
         <lombok.version>1.18.36</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
@@ -44,14 +45,12 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.1.0</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -92,6 +91,13 @@
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- Lombok -->
         <dependency>
@@ -118,9 +124,23 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.4.0</version>
                 <configuration>
+                    <argLine>
+                        -XX:+EnableDynamicAgentLoading
+                    </argLine>
                     <properties>
                         <excludeEngines>junit-vintage</excludeEngines>
                     </properties>
@@ -159,7 +179,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>7.2.0</version>
+                <version>7.11.0</version>
                 <executions>
                     <execution>
                         <id>generate-api-client</id>
@@ -171,19 +191,18 @@
                             <generatorName>java</generatorName>
                             <apiPackage>com.imshakthi.ds.client.api</apiPackage>
                             <modelPackage>com.imshakthi.ds.client.model</modelPackage>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
                             <configOptions>
                                 <library>webclient</library>
-                                <modelTests>false</modelTests>
-                                <dateLibrary>java8</dateLibrary>
-                                <useTags>true</useTags>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <dateLibrary>java8-localdatetime</dateLibrary>
                                 <useOptional>true</useOptional>
                                 <reactive>true</reactive>
                                 <enablePostProcessFile>true</enablePostProcessFile>
-                                <delegatePattern>true</delegatePattern>
                                 <useJakartaEe>true</useJakartaEe>
                             </configOptions>
-                            <output>${project.basedir}/target/generated-sources/openapi</output>
+<!--                            <output>${project.basedir}/target/generated-sources/openapi</output>-->
                         </configuration>
                     </execution>
                 </executions>
