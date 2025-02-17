@@ -11,11 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-@Schema(description = "public holidays of a country")
-public class CountryWithPublicHolidays {
-  @Schema(description = "name of country")
-  private String country;
+@Schema(description = "holidays of a country")
+public class CountryHolidayDetails {
+  @Schema(description = "code of country")
+  private String countryCode;
 
-  @Schema(description = "list of public holidays")
+  @Schema(description = "list of holidays")
   private List<Holiday> holidays;
 }

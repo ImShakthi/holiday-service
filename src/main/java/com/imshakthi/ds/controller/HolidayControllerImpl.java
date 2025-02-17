@@ -1,12 +1,12 @@
 package com.imshakthi.ds.controller;
 
-import com.imshakthi.ds.dto.response.CountriesAndPublicHolidaysResponse;
-import com.imshakthi.ds.dto.response.Holiday;
+import com.imshakthi.ds.dto.response.CountriesPublicHolidaysResponse;
 import com.imshakthi.ds.dto.response.LastCelebratedHolidaysResponse;
+import com.imshakthi.ds.dto.response.LocalHoliday;
 import com.imshakthi.ds.exception.BadRequestException;
 import com.imshakthi.ds.mapper.HolidayMapper;
 import com.imshakthi.ds.service.CountryService;
-import com.imshakthi.ds.service.HolidayService;
+import com.imshakthi.ds.service.HolidayServiceImpl;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -24,17 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class HolidayControllerImpl implements HolidayController {
 
   private final CountryService countryService;
-  private final HolidayService holidayService;
+  private final HolidayServiceImpl holidayService;
   private final HolidayMapper holidayMapper;
 
   @Override
   public ResponseEntity<LastCelebratedHolidaysResponse> getLastCelebratedHolidays(
       final @PathVariable("country") String countryCode) {
 
-    if (!countryService.isValidCountryCode(countryCode)) {
-      log.error("invalid country code: {}", countryCode);
-      throw new BadRequestException("invalid country code");
-    }
+    validateCountryCode(countryCode);
 
     final var holidays = holidayService.getLastCelebratedHolidays(countryCode);
 
@@ -42,18 +39,44 @@ public class HolidayControllerImpl implements HolidayController {
   }
 
   @Override
-  public ResponseEntity<CountriesAndPublicHolidaysResponse> getPublicHolidays(
+  public ResponseEntity<CountriesPublicHolidaysResponse> getPublicHolidays(
       final @PathVariable("year") int year,
-      final @RequestParam(value = "countryCodes") @NotEmpty List<String> countries) {
+      final @RequestParam(value = "countryCodes") @NotEmpty List<String> countryCodes) {
 
-    return ResponseEntity.ok(new CountriesAndPublicHolidaysResponse(List.of()));
+    countryCodes.forEach(this::validateCountryCode);
+
+    final var nonWeekendPublicHolidays =
+        holidayService.getNonWeekendPublicHolidays(year, countryCodes);
+
+    return ResponseEntity.ok(
+        new CountriesPublicHolidaysResponse(
+            holidayMapper.mapToCountryHolidayDetails(nonWeekendPublicHolidays)));
   }
 
   @Override
-  public ResponseEntity<List<Holiday>> getHolidays(
+  public ResponseEntity<List<LocalHoliday>> getLocalHolidays(
       final @PathVariable("year") int year,
-      final @RequestParam(value = "countryCodes") @NotEmpty List<String> countries) {
+      final @RequestParam(value = "countryCodes") @NotEmpty List<String> countryCodes) {
 
-    return ResponseEntity.ok(List.of());
+    countryCodes.forEach(this::validateCountryCode);
+    validateMaxNoOfCountryCodes(countryCodes);
+
+    final var deDuplicatedHolidays = holidayService.getDeDuplicatedHolidays(year, countryCodes);
+
+    return ResponseEntity.ok(holidayMapper.mapToLocalHolidays(deDuplicatedHolidays));
+  }
+
+  private void validateCountryCode(final String countryCode) {
+    if (!countryService.isValidCountryCode(countryCode)) {
+      log.error("invalid country code: {}", countryCode);
+      throw new BadRequestException("invalid country code : " + countryCode);
+    }
+  }
+
+  private void validateMaxNoOfCountryCodes(final List<String> countryCodes) {
+    if (countryCodes.size() != 2) {
+      log.error("expected number of country codes is 2, got : {}", countryCodes);
+      throw new BadRequestException("expected number of country codes is 2");
+    }
   }
 }

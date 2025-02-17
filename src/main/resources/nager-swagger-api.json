@@ -565,14 +565,6 @@
             "type": "boolean",
             "description": "Is this public holiday in every county (federal state)"
           },
-          "counties": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "ISO-3166-2 - Federal states",
-            "nullable": true
-          },
           "launchYear": {
             "type": "integer",
             "description": "The launch year of the public holiday",

@@ -13,6 +13,6 @@ import java.util.List;
 @Setter
 @Getter
 @Schema(description = "public holidays of given countries response")
-public class CountriesAndPublicHolidaysResponse {
-    private List<CountryWithPublicHolidays> holidays;
+public class CountriesPublicHolidaysResponse {
+    private List<CountryHolidayDetails> holidays;
 }

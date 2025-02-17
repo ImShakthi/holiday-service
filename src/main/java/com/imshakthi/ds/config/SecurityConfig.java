@@ -23,8 +23,11 @@ public class SecurityConfig {
             auth ->
                 auth.requestMatchers("/api/v1/hello")
                     .permitAll()
-                    .requestMatchers(
-                        HttpMethod.GET, "/api/v1/holidays/last-celebrated/{country}")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/holidays/last-celebrated/{country}")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/holidays/{year}/public")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/holidays/{year}/local")
                     .permitAll()
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
                     .permitAll()

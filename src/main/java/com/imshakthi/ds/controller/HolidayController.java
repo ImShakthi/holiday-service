@@ -1,9 +1,10 @@
 package com.imshakthi.ds.controller;
 
-import com.imshakthi.ds.dto.response.CountriesAndPublicHolidaysResponse;
+import com.imshakthi.ds.dto.response.CountriesPublicHolidaysResponse;
 import com.imshakthi.ds.dto.response.ErrorResponse;
 import com.imshakthi.ds.dto.response.Holiday;
 import com.imshakthi.ds.dto.response.LastCelebratedHolidaysResponse;
+import com.imshakthi.ds.dto.response.LocalHoliday;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -70,7 +71,7 @@ public interface HolidayController {
             content = {
               @Content(
                   mediaType = "application/json",
-                  schema = @Schema(implementation = CountriesAndPublicHolidaysResponse.class))
+                  schema = @Schema(implementation = CountriesPublicHolidaysResponse.class))
             }),
         @ApiResponse(
             responseCode = "400",
@@ -90,7 +91,7 @@ public interface HolidayController {
             })
       })
   @GetMapping("/{year}/public")
-  ResponseEntity<CountriesAndPublicHolidaysResponse> getPublicHolidays(
+  ResponseEntity<CountriesPublicHolidaysResponse> getPublicHolidays(
       final @PathVariable("year") int year,
       final @RequestParam(value = "countryCodes") @NotEmpty List<String> countries);
 
@@ -131,8 +132,8 @@ public interface HolidayController {
                   schema = @Schema(implementation = ErrorResponse.class))
             })
       })
-  @GetMapping("/{year}")
-  ResponseEntity<List<Holiday>> getHolidays(
+  @GetMapping("/{year}/local")
+  ResponseEntity<List<LocalHoliday>> getLocalHolidays(
       final @PathVariable("year") int year,
       final @RequestParam(value = "country-codes") @NotEmpty List<String> countries);
 }

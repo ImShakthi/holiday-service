@@ -16,7 +16,7 @@
     <properties>
         <java.version>21</java.version>
         <junit.jupiter.version>5.11.4</junit.jupiter.version>
-        <mockito.version>5.14.2</mockito.version>
+        <mockito.version>5.15.2</mockito.version>
         <lombok.version>1.18.36</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
@@ -97,6 +97,12 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
 
 
         <!-- Lombok -->
@@ -117,7 +123,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -141,9 +146,6 @@
                     <argLine>
                         -XX:+EnableDynamicAgentLoading
                     </argLine>
-                    <properties>
-                        <excludeEngines>junit-vintage</excludeEngines>
-                    </properties>
                 </configuration>
             </plugin>
 
@@ -202,7 +204,7 @@
                                 <enablePostProcessFile>true</enablePostProcessFile>
                                 <useJakartaEe>true</useJakartaEe>
                             </configOptions>
-<!--                            <output>${project.basedir}/target/generated-sources/openapi</output>-->
+                            <!--                            <output>${project.basedir}/target/generated-sources/openapi</output>-->
                         </configuration>
                     </execution>
                 </executions>

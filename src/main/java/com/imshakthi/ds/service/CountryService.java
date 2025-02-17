@@ -9,29 +9,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class CountryService {
   private final Set<String> countryCodes = new ConcurrentSkipListSet<>();
-  private final Set<String> countryNames = new ConcurrentSkipListSet<>();
 
   public CountryService(final NagerService nagerService) {
     final var countries = nagerService.getAllCountries();
 
     countries.forEach(
         country -> {
-          countryCodes.add(country.countryCode());
-          countryNames.add(country.name());
+          countryCodes.add(country.countryCode().toUpperCase());
         });
 
     log.info("Country codes: {}", countryCodes);
   }
 
-  public Set<String> getAllCountries() {
-    return countryCodes;
-  }
-
   public boolean isValidCountryCode(final String countryCode) {
-    return countryCodes.contains(countryCode);
-  }
-
-  public boolean isValidCountry(final String name) {
-    return countryNames.contains(name);
+    return countryCodes.contains(countryCode.toUpperCase());
   }
 }

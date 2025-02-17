@@ -10,3 +10,11 @@ Accept: application/json
 ### return last 3 celebrated public holiday for country code
 GET {{server}}/api/v1/holidays/last-celebrated/NL
 Accept: application/json
+
+### return public holiday for each country code not in weekend
+GET {{server}}/api/v1/holidays/2025/public?countryCodes=NL&countryCodes=DE
+Accept: application/json
+
+### return local celebrated holiday for country codes
+GET {{server}}/api/v1/holidays/2025/local?countryCodes=NL&countryCodes=DE
+Accept: application/json
