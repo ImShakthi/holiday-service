@@ -27,28 +27,14 @@ public class HolidayServiceImpl implements HolidayService {
 
   @Override
   public List<Holiday> getLastCelebratedHolidays(final String countryCode) {
-
     final int currentYear = getCurrentYear();
     final var last3Holidays = getLastCelebratedHolidays(currentYear, countryCode);
 
     if (last3Holidays.isEmpty() || last3Holidays.size() < MAX_LAST_HOLIDAYS) {
-      final int missingNoHolidays = MAX_LAST_HOLIDAYS - last3Holidays.size();
-
-      log.info(
-          "current year {} has only #{} holidays need to fetch missing #{} holidays from prev year.",
-          currentYear,
-          last3Holidays.size(),
-          missingNoHolidays);
-
-      final var last3PrevYearHolidays =
-          getLastCelebratedHolidays(currentYear - 1, countryCode).stream()
-              .limit(missingNoHolidays)
-              .toList();
-
-      return Stream.concat(last3Holidays.stream(), last3PrevYearHolidays.stream()).toList();
+      return computeCelebratedHolidaysFor(currentYear - 1, countryCode, last3Holidays);
     }
-    log.info("last 3 holidays fetched.");
 
+    log.info("last 3 holidays fetched.");
     return last3Holidays;
   }
 
@@ -79,6 +65,21 @@ public class HolidayServiceImpl implements HolidayService {
               return new LocalHoliday(h2.date(), holidays);
             })
         .toList();
+  }
+
+  private List<Holiday> computeCelebratedHolidaysFor(
+      final int year, final String countryCode, final List<Holiday> last3Holidays) {
+    final int missingNoHolidays = MAX_LAST_HOLIDAYS - last3Holidays.size();
+    log.info(
+        "current year {} has only #{} holidays need to fetch missing #{} holidays from prev year.",
+        year,
+        last3Holidays.size(),
+        missingNoHolidays);
+
+    final var last3PrevYearHolidays =
+        getLastCelebratedHolidays(year, countryCode).stream().limit(missingNoHolidays).toList();
+
+    return Stream.concat(last3Holidays.stream(), last3PrevYearHolidays.stream()).toList();
   }
 
   private CountryAndHolidays getNonWeekendPublicHolidays(final int year, final String countryCode) {

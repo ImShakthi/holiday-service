@@ -3,7 +3,7 @@ spring:
     name: holiday-service
 
 server:
-  port: 8080
+  port: 8081
 
 nager:
   base-url: https://date.nager.at/

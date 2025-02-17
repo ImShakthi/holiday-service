@@ -20,16 +20,17 @@
 ./mvnw clean compile
 ```
 
-- To start server, application with run in `8080`
+- To start server, application with run in `8081`
 
 ```shell
 ./mvnw clean spring-boot:run
 ```
 
 - Once application is running you can find the OpenAPI specs
-  at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+  at [http://localhost:8081/swagger-ui/index.html](http://localhost:8081/swagger-ui/index.html)
   and [http://localhost:8081/v3/api-docs](http://localhost:8081/v3/api-docs)
 - If you are using Intellij, sample HTTP API files can be found here `http/api.http` in this repo
+- Used Nager API Open API to make API calls.
 
 ## Description
 
